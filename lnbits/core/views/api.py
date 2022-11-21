@@ -175,7 +175,7 @@ async def api_payments_create_invoice(data: CreateInvoiceData, wallet: Wallet):
                 detail="'unhashed_description' must be a valid hex string",
             )
         description_hash = b""
-        memo = ""
+        memo = data.memo
     else:
         description_hash = b""
         unhashed_description = b""
@@ -490,6 +490,13 @@ async def api_payment(payment_hash, X_Api_Key: Optional[str] = Header(None)):
 
 @core_app.get("/api/v1/lnurlscan/{code}")
 async def api_lnurlscan(code: str, wallet: WalletTypeInfo = Depends(get_key_type)):
+    try:
+        byte_key = bytes.fromhex(code)
+        if len(byte_key) == 33:
+            return {"pubkey": code}
+    except:
+        pass
+
     try:
         url = lnurl.decode(code)
         domain = urlparse(url).netloc
