@@ -10,6 +10,7 @@ class CreateScrubLink(BaseModel):
     wallet: str
     description: str
     payoraddress: str
+    deduct_fee: bool
 
 
 class ScrubLink(BaseModel):
@@ -17,6 +18,7 @@ class ScrubLink(BaseModel):
     wallet: str
     description: str
     payoraddress: str
+    deduct_fee: bool
 
     @classmethod
     def from_row(cls, row: Row) -> "ScrubLink":

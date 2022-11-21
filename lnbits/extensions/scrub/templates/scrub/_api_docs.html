@@ -38,7 +38,7 @@
         </h5>
         <code
           >{"id": &lt;string&gt;, "wallet": &lt;string&gt;, "description":
-          &lt;string&gt;, "payoraddress": &lt;string&gt;}</code
+          &lt;string&gt;, "payoraddress": &lt;string&gt;, "deduct_fee": &lt;bool&gt;}</code
         >
         <h5 class="text-caption q-mt-sm q-mb-none">Curl example</h5>
         <code
@@ -57,20 +57,20 @@
         <h5 class="text-caption q-mt-sm q-mb-none">Body (application/json)</h5>
         <code
           >{"wallet": &lt;string&gt;, "description": &lt;string&gt;,
-          "payoraddress": &lt;string&gt;}</code
+          "payoraddress": &lt;string&gt;, "deduct_fee": &lt;bool&gt;}</code
         >
         <h5 class="text-caption q-mt-sm q-mb-none">
           Returns 201 CREATED (application/json)
         </h5>
         <code
           >{"id": &lt;string&gt;, "wallet": &lt;string&gt;, "description":
-          &lt;string&gt;, "payoraddress": &lt;string&gt;}</code
+          &lt;string&gt;, "payoraddress": &lt;string&gt;, "deduct_fee": &lt;bool&gt;}</code
         >
         <h5 class="text-caption q-mt-sm q-mb-none">Curl example</h5>
         <code
           >curl -X POST {{ request.base_url }}scrub/api/v1/links -d '{"wallet":
           &lt;string&gt;, "description": &lt;string&gt;, "payoraddress":
-          &lt;string&gt;}' -H "Content-type: application/json" -H "X-Api-Key: {{
+          &lt;string&gt;, "deduct_fee": &lt;bool&gt;}' -H "Content-type: application/json" -H "X-Api-Key: {{
           user.wallets[0].adminkey }}"
         </code>
       </q-card-section>
@@ -88,20 +88,20 @@
         <h5 class="text-caption q-mt-sm q-mb-none">Body (application/json)</h5>
         <code
           >{"wallet": &lt;string&gt;, "description": &lt;string&gt;,
-          "payoraddress": &lt;string&gt;}</code
+          "payoraddress": &lt;string&gt;, "deduct_fee": &lt;bool&gt;}</code
         >
         <h5 class="text-caption q-mt-sm q-mb-none">
           Returns 200 OK (application/json)
         </h5>
         <code
           >{"id": &lt;string&gt;, "wallet": &lt;string&gt;, "description":
-          &lt;string&gt;, "payoraddress": &lt;string&gt;}</code
+          &lt;string&gt;, "payoraddress": &lt;string&gt;, "deduct_fee": &lt;bool&gt;}</code
         >
         <h5 class="text-caption q-mt-sm q-mb-none">Curl example</h5>
         <code
           >curl -X PUT {{ request.base_url }}scrub/api/v1/links/&lt;pay_id&gt;
           -d '{"wallet": &lt;string&gt;, "description": &lt;string&gt;,
-          "payoraddress": &lt;string&gt;}' -H "Content-type: application/json"
+          "payoraddress": &lt;string&gt;, "deduct_fee": &lt;bool&gt;}' -H "Content-type: application/json"
           -H "X-Api-Key: {{ user.wallets[0].adminkey }}"
         </code>
       </q-card-section>

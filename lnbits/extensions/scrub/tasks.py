@@ -15,7 +15,6 @@ from lnbits.tasks import register_invoice_listener
 
 from .crud import get_scrub_by_wallet
 
-
 async def wait_for_paid_invoices():
     invoice_queue = asyncio.Queue()
     register_invoice_listener(invoice_queue, get_current_extension_name())
@@ -37,13 +36,38 @@ async def on_invoice_paid(payment: Payment) -> None:
         return
 
     from lnbits.core.views.api import api_lnurlscan
+    from lnbits.core.services import pay_with_keysend, fee_reserve
+    from lnbits.core.crud import get_wallet
 
-    # DECODE LNURLP OR LNADDRESS
+    rounded_amount = floor(payment.amount / 1000) * 1000
+
+    if scrub_link.deduct_fee:
+        # reduce amount by fee reserve
+        # unless there's already balance on the wallet (then use it)
+        wallet = await get_wallet(payment.wallet_id)
+        if wallet.balance_msat - rounded_amount < fee_reserve(rounded_amount):
+            rounded_amount -= fee_reserve(rounded_amount) - (wallet.balance_msat - rounded_amount)
+
+    # DECODE LNURLP/LNADDRESS/PUBKEY
     data = await api_lnurlscan(scrub_link.payoraddress)
+
+    if "pubkey" in data:
+        # so that we can actualy send it ...
+        payment_hash = await pay_with_keysend(
+            payment.wallet_id,
+            scrub_link.payoraddress,
+            rounded_amount,
+            scrub_link.description,
+            extra={"tag": "scrubed"},
+        )
+        return {
+            "payment_hash": payment_hash,
+            # maintain backwards compatibility with API clients:
+            "checking_id": payment_hash,
+        }
 
     # I REALLY HATE THIS DUPLICATION OF CODE!! CORE/VIEWS/API.PY, LINE 267
     domain = urlparse(data["callback"]).netloc
-    rounded_amount = floor(payment.amount / 1000) * 1000
 
     async with httpx.AsyncClient() as client:
         try:

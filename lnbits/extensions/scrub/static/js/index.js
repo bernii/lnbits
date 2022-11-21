@@ -62,6 +62,10 @@ new Vue({
     closeFormDialog() {
       this.resetFormData()
     },
+    openNewDialog() {
+      this.resetFormData()
+      this.formDialog.show = true
+    },
     openUpdateDialog(linkId) {
       const link = _.findWhere(this.payLinks, {id: linkId})
 
@@ -84,7 +88,7 @@ new Vue({
     resetFormData() {
       this.formDialog = {
         show: false,
-        data: {}
+        data: {deduct_fee: false}
       }
     },
     updateScrubLink(wallet, data) {

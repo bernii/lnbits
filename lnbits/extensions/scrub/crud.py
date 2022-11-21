@@ -14,15 +14,17 @@ async def create_scrub_link(data: CreateScrubLink) -> ScrubLink:
             id,
             wallet,
             description,
-            payoraddress
+            payoraddress,
+            deduct_fee
         )
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?)
         """,
         (
             scrub_id,
             data.wallet,
             data.description,
             data.payoraddress,
+            data.deduct_fee,
         ),
     )
     link = await get_scrub_link(scrub_id)

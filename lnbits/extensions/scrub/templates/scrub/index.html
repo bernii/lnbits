@@ -4,7 +4,7 @@
   <div class="col-12 col-md-7 q-gutter-y-md">
     <q-card>
       <q-card-section>
-        <q-btn unelevated color="primary" @click="formDialog.show = true"
+        <q-btn unelevated color="primary" @click="openNewDialog()"
           >New scrub link</q-btn
         >
       </q-card-section>
@@ -30,6 +30,7 @@
               <q-th>Wallet</q-th>
               <q-th>Description</q-th>
               <q-th>LNURLPay/Address</q-th>
+              <q-th>Deduct fee</q-th>
               <q-th auto-width></q-th>
             </q-tr>
           </template>
@@ -38,6 +39,7 @@
               <q-td>{{ props.row.wallet }}</q-td>
               <q-td>{{ props.row.description }}</q-td>
               <q-td>{{ props.row.payoraddress }}</q-td>
+              <q-td>{{ props.row.deduct_fee }}</q-td>
               <q-td auto-width>
                 <q-btn
                   flat
@@ -120,8 +122,15 @@
           dense
           v-model.trim="formDialog.data.payoraddress"
           type="text"
-          label="LNURLPay or LNAdress *"
+          label="LNURLPay/LNAdress/PubKey *"
         ></q-input>
+
+        <q-checkbox
+          dense
+          v-model.trim="formDialog.data.deduct_fee"
+          label="deduct fee from the wallet balance"
+        ></q-checkbox>
+
         <div class="row q-mt-lg">
           <q-btn
             v-if="formDialog.data.id"
